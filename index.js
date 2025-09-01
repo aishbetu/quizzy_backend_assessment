@@ -29,14 +29,18 @@ app.use("/api/skill", skillRoute);
 app.use("/api/questions", questionRoute);
 app.use("/api/attempts", attemptRoutes);
 
-
-
 app.get("/", (req, res) => {
     res.status(200).json({ message: "Welcome to the Quizzy API" });
 });
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+// For Vercel serverless deployment
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    });
+}
+
+// Export the Express app for Vercel
+export default app;
