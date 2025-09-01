@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import { Sequelize } from "sequelize";
+import mysql2 from "mysql2";
 
 dotenv.config();
 
@@ -11,6 +12,7 @@ const sequelize = new Sequelize(
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     dialect: "mysql",
+    dialectModule: mysql2,
     dialectOptions: {
       ssl: {
         require: true,
@@ -18,9 +20,16 @@ const sequelize = new Sequelize(
       },
     },
     logging: false,
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000
+    }
   }
 );
 
+if (process.env.NODE_ENV !== 'production'){
 (async () => {
     try {
         await sequelize.authenticate();
@@ -29,5 +38,6 @@ const sequelize = new Sequelize(
         console.error("❌ MySQL connection failed:", error);
     }
 })();
+}
 
 export default sequelize;

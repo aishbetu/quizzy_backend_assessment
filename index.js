@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import mysql2 from "mysql2";
 import sequelize from "./database/db.js";
 import authRoute from "./routes/authRoute.js";
 import skillRoute from "./routes/skillRoute.js";
